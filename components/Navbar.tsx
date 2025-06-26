@@ -6,12 +6,12 @@ import { useState } from "react";
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const handleAuth = () => {
-    console.log("Clicked");
+    ///
   };
 
   return (
     <div className="flex justify-center py-2">
-      <div className="w-full max-w-2xl bg-navbar-bg rounded-full m-4 border-1 border-black/8 px-2 sm:px-4 md:px-8 flex items-center h-14 relative">
+      <div className="w-full max-w-2xl bg-[#FAE6D5] rounded-full m-4 border-1 border-black/8 px-2 sm:px-4 md:px-8 flex items-center h-14 relative">
         <div className="flex-shrink-0 flex items-center p-2 md:p-4">
           <img src="/mascot.svg" alt="Ripple mascot" className="w-8 h-8" />
         </div>
@@ -48,7 +48,7 @@ export default function Navbar() {
           </Button>
         </div>
         {open && (
-          <div className="absolute top-full left-0 w-full bg-navbar-bg rounded-b-2xl shadow-lg flex flex-col items-center z-50 py-4 md:hidden animate-fade-in">
+          <div className="absolute top-full left-0 w-full bg-[#FAE6D5] rounded-b-2xl shadow-lg flex flex-col items-center z-50 py-4 md:hidden animate-fade-in">
             <a href="#" className="text-lg font-semibold py-2 w-full text-center hover:bg-secondary">Home</a>
             <a href="#" className="text-lg font-semibold py-2 w-full text-center hover:bg-secondary">About</a>
             <a href="#" className="text-lg font-semibold py-2 w-full text-center hover:bg-secondary">Contact</a>
