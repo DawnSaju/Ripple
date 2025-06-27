@@ -1,13 +1,27 @@
 "use client";
 
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client"
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [IsLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
   const handleAuth = () => {
-    ///
+    router.push("/auth");
   };
+  
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: session, error } = await authClient.getSession();
+      if (session) {
+        setIsLoggedIn(true);
+      }
+    }
+    getUser();
+  }, []);
 
   return (
     <div className="flex justify-center py-2">
@@ -52,15 +66,24 @@ export default function Navbar() {
             <a href="#" className="text-lg font-semibold py-2 w-full text-center hover:bg-secondary">Home</a>
             <a href="#" className="text-lg font-semibold py-2 w-full text-center hover:bg-secondary">About</a>
             <a href="#" className="text-lg font-semibold py-2 w-full text-center hover:bg-secondary">Contact</a>
-            <Button
-              onClick={handleAuth}
-              className="mt-4 w-3/4 mx-auto px-4 h-10 rounded-4xl bg-primary text-lg text-white"
-            >
-              Sign in
-            </Button>
+            {IsLoggedIn ?
+              <Button
+                onClick={() => router.push("/dashboard")}
+                className="mt-4 w-3/4 mx-auto px-4 h-10 rounded-4xl bg-primary text-lg text-white"
+              >
+                Dashboard
+              </Button>
+              : <Button
+                onClick={handleAuth}
+                className="mt-4 w-3/4 mx-auto px-4 h-10 rounded-4xl bg-primary text-lg text-white"
+              >
+                Sign in
+              </Button>
+            }
           </div>
         )}
       </div>
     </div>
   );
 }
+
