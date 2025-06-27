@@ -15,7 +15,7 @@ export default function Navbar() {
   
   useEffect(() => {
     const getUser = async () => {
-      const { data: session, error } = await authClient.getSession();
+      const { data: session } = await authClient.getSession();
       if (session) {
         setIsLoggedIn(true);
       }
