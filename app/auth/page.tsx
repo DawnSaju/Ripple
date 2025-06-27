@@ -14,23 +14,21 @@ import Image from "next/image";
 
 export default function AuthPage() {
   const [mode, setMode] = useState<"login" | "register">("login");
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect") || "/dashboard";
-  const [error, setError] = useState<string | null>(null);
 
   const login = async () => {
+    const redirect = searchParams.get("redirect") || "/dashboard";
     await signIn.email(
       { email, password },
       {
@@ -40,13 +38,14 @@ export default function AuthPage() {
         onSuccess: async () => router.push(redirect),
       }
     );
-  }
+  };
 
   const register = async () => {
     if (password !== passwordConfirmation) {
       setError("Passwords do not match");
       return;
     }
+    const redirect = searchParams.get("redirect") || "/dashboard";
     await signUp.email({
       email,
       password,
@@ -60,7 +59,7 @@ export default function AuthPage() {
         onSuccess: async () => router.push(redirect),
       },
     });
-  }
+  };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
