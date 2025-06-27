@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, X } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { signIn, signUp } from "@/lib/auth-client";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -81,7 +81,7 @@ export default function AuthPage() {
           <CardDescription className="text-center text-base text-muted-foreground">
             {mode === "login" ? (
               <>
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <button className="text-[#FA5539] font-medium hover:underline" onClick={() => { setMode("register"); setError(null); }}>Sign up</button>
               </>
             ) : (
