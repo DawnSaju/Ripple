@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import { signIn, signUp } from "@/lib/auth-client";
-import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 export function AuthClient() {
@@ -21,9 +20,6 @@ export function AuthClient() {
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   const handleGithub = async () => {
     await signIn.social({
