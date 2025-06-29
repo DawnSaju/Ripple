@@ -25,15 +25,27 @@ export function AuthClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const handleGithub = async () => {
+    await signIn.social({
+      provider: "github",
+      callbackURL: "/dashboard"
+    });
+  }
+
+  const handleGoogle = async () => {
+    await signIn.social({
+      provider: "google",
+      callbackURL: "/dashboard"
+    });
+  }
+
   const login = async () => {
-    const redirect = searchParams.get("redirect") || "/dashboard";
     await signIn.email(
-      { email, password },
+      { email, password, callbackURL: "/dashboard" },
       {
         onRequest: () => setLoading(true),
         onResponse: () => setLoading(false),
         onError: (ctx) => { setError(ctx.error?.message || "Login failed"); },
-        onSuccess: async () => router.push(redirect),
       }
     );
   };
@@ -43,18 +55,16 @@ export function AuthClient() {
       setError("Passwords do not match");
       return;
     }
-    const redirect = searchParams.get("redirect") || "/dashboard";
     await signUp.email({
       email,
       password,
       name: `${firstName} ${lastName}`,
       image: image ? await convertImageToBase64(image) : "",
-      callbackURL: redirect,
+      callbackURL: "/dashboard",
       fetchOptions: {
         onResponse: () => setLoading(false),
         onRequest: () => setLoading(true),
         onError: (ctx) => { setError(ctx.error?.message || "Registration failed"); },
-        onSuccess: async () => router.push(redirect),
       },
     });
   };
@@ -93,11 +103,11 @@ export function AuthClient() {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <div className="flex gap-2 mb-2">
-            <Button variant="outline" className="flex-1 border border-gray-200" style={{ color: '#24292f' }}>
+            <Button onClick={handleGithub} variant="outline" className="flex-1 border border-gray-200" style={{ color: '#24292f' }}>
               <svg width="20" height="20" fill="currentColor" className="mr-2" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.415-4.042-1.415-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.084-.729.084-.729 1.205.084 1.84 1.236 1.84 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.305.762-1.605-2.665-.305-5.466-1.334-5.466-5.931 0-1.31.469-2.381 1.236-3.221-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.553 3.297-1.23 3.297-1.23.653 1.653.242 2.873.119 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.803 5.624-5.475 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
               Login with GitHub
             </Button>
-            <Button variant="outline" className="flex-1 border border-gray-200" style={{ color: '#EA4335' }}>
+            <Button onClick={handleGoogle} variant="outline" className="flex-1 border border-gray-200" style={{ color: '#EA4335' }}>
               <svg width="20" height="20" fill="currentColor" className="mr-2" viewBox="0 0 24 24"><path d="M21.805 10.023h-9.765v3.954h5.617c-.242 1.236-1.457 3.627-5.617 3.627-3.377 0-6.13-2.797-6.13-6.25s2.753-6.25 6.13-6.25c1.922 0 3.217.82 3.96 1.527l2.707-2.633c-1.71-1.59-3.922-2.57-6.667-2.57-5.523 0-10 4.477-10 10s4.477 10 10 10c5.523 0 9.168-3.867 9.168-9.344 0-.625-.07-1.094-.156-1.547z"/></svg>
               Login with Google
             </Button>
